@@ -1,0 +1,13 @@
+senha.txt
+data/*.tmp
+node_modules/
+# originais de trabalho (fotos, logos, vídeo) — o site usa as versões em site/img
+*.HEIC
+*.heic
+*.jpeg
+BIOMAKE LOGO*
+avatar.jpeg
+biomake_video.mp4
+CN.jpeg
+info.txt
+data/promos.json
