@@ -9,8 +9,8 @@ Dê dois cliques em `abrir-site.bat` (precisa do Node.js) ou rode `node tools/se
 - Lojas (endereço, WhatsApp, Instagram) e marcas: topo de `site/app.js`, listas `STORES` e `BRANDS`.
 - Textos: `site/index.html`.
 - Cores e tamanhos: `site/styles.css` (as regras de telas grandes ficam no final do arquivo).
-- Efeitos 3D: `site/scene.js`.
-- Ao mudar `app.js`, `styles.css` ou `scene.js`, troque o número `?v=` nos links do `index.html` para o celular baixar a versão nova.
+- Fotos flutuantes do início: `site/img/fx/` (recortes em webp) e as classes `.fx-*` em `site/styles.css`.
+- Ao mudar `app.js` ou `styles.css`, troque o número `?v=` nos links do `index.html` para o celular baixar a versão nova.
 
 ## Publicar
 - **Vercel:** o `vercel.json` já aponta a pasta `site/`. Todo push na `main` publica sozinho.

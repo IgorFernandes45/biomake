@@ -51,7 +51,6 @@
       $('#tabInd').style.setProperty('--i', VIEWS.indexOf(name));
       current = name;
       window.scrollTo(0, 0);
-      if (window.BioScene) BioScene.setView(name);
       try { history.replaceState(null, '', '#' + name); } catch (e) { }
       document.title = name === 'inicio' ? 'BioMake — Qualquer produto por R$ 10,00' : $('#view-' + name + ' h1').textContent + ' · BioMake';
       watchReveals();
@@ -136,11 +135,11 @@
       t.classList.remove('live'); t.style.setProperty('--rx', '0deg'); t.style.setProperty('--ry', '0deg');
     });
     (function () { var pc = $('.price-card'); if (pc) pc.appendChild(el('span', 'glare')); })();
-    var av = $('#avatar');
+    var stage = $('#stage');
     window.addEventListener('pointermove', function (e) {
       if (current !== 'inicio') return;
-      var nx = e.clientX / window.innerWidth - .5, ny = e.clientY / window.innerHeight - .5;
-      av.style.setProperty('--px', (nx * 26).toFixed(1) + 'px'); av.style.setProperty('--py', (ny * 16).toFixed(1) + 'px'); av.style.setProperty('--pr', (nx * 3).toFixed(2) + 'deg');
+      stage.style.setProperty('--mx', ((e.clientX / window.innerWidth - .5) * 2).toFixed(3));
+      stage.style.setProperty('--my', ((e.clientY / window.innerHeight - .5) * 2).toFixed(3));
     }, { passive: true });
   } else {
     var pcard = $('.price-card'); if (pcard) pcard.classList.remove('tilt');
@@ -176,7 +175,6 @@
   }
   function toggleWa(open) {
     waSheet.hidden = !open; document.body.style.overflow = open ? 'hidden' : '';
-    if (window.BioScene) BioScene.pause(open);   // com a janela aberta o 3D fica parado (poupa bateria)
   }
   document.addEventListener('click', function (e) { if (e.target.closest('[data-wa]')) toggleWa(true); });
   waSheet.addEventListener('click', function (e) { if (e.target.closest('[data-close]')) toggleWa(false); });
