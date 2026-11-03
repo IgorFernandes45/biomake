@@ -40,7 +40,7 @@
   function waUrl(d) { return 'https://wa.me/55' + d + '?text=' + encodeURIComponent('Olá! Vim pelo site da BioMake 💜'); }
 
   /* ================= NAVEGAÇÃO (barra de abas) ================= */
-  var VIEWS = ['inicio', 'lojas', 'marcas'];
+  var VIEWS = ['inicio', 'lojas'];
   var current = null;
   function go(name, opts) {
     if (VIEWS.indexOf(name) < 0) name = 'inicio';
@@ -109,15 +109,14 @@
     });
     grid.appendChild(gf); rail.appendChild(rf);
   }
-  function renderBrands() {
-    var grid = $('#brandGrid'), strip = $('#brandStrip');
-    var gf = document.createDocumentFragment(), sf = document.createDocumentFragment();
-    BRANDS.forEach(function (b) {
-      var t = el('div', 'brand-tile ' + b.cls); t.style.setProperty('--tint', b.tint);
-      var s = el('span'); s.innerHTML = b.html; t.appendChild(s); t.setAttribute('aria-label', b.name); tiltable(t);
-      gf.appendChild(t); sf.appendChild(el('span', '', b.name));
+  function renderBrands() {   // as marcas flutuam junto com as fotos de maquiagem
+    var field = $('#brandField'), f = document.createDocumentFragment();
+    BRANDS.forEach(function (b, i) {
+      var t = el('div', 'bf ' + b.cls + ' bf-' + (i + 1)); t.style.setProperty('--tint', b.tint);
+      var s = el('span'); s.innerHTML = b.html; t.appendChild(s); t.setAttribute('aria-label', b.name);
+      f.appendChild(t);
     });
-    grid.appendChild(gf); strip.appendChild(sf);
+    field.appendChild(f);
   }
 
   /* ================= EFEITOS (só computador com mouse) ================= */

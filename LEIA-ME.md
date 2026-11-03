@@ -6,7 +6,7 @@ Site 100% estático (HTML, CSS e JS), pensado primeiro para celular. A pasta `si
 Dê dois cliques em `abrir-site.bat` (precisa do Node.js) ou rode `node tools/serve-local.js` e abra http://localhost:3000.
 
 ## Onde editar
-- Lojas (endereço, WhatsApp, Instagram) e marcas: topo de `site/app.js`, listas `STORES` e `BRANDS`.
+- Lojas (endereço, WhatsApp, Instagram): topo de `site/app.js`, lista `STORES`. As marcas que flutuam na página inicial estão na lista `BRANDS`.
 - Textos: `site/index.html`.
 - Cores e tamanhos: `site/styles.css` (as regras de telas grandes ficam no final do arquivo).
 - Fotos flutuantes do início: `site/img/fx/` (recortes em webp) e as classes `.fx-*` em `site/styles.css`.

@@ -21,7 +21,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Cinzel:wght@800&family=Inter:wght@400;600;700;800&family=Playfair+Display:ital,wght@1,600&display=swap" media="print" onload="this.media='all'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Cinzel:wght@800&family=Inter:wght@400;600;700;800&family=Playfair+Display:ital,wght@1,600&display=swap"></noscript>
-<link rel="stylesheet" href="styles.css?v=5">
+<link rel="stylesheet" href="styles.css?v=6">
 </head>
 <body>
 
@@ -56,8 +56,7 @@
       <div class="hero-stage" id="stage">
         <div class="ring"></div>
         <img class="fx fx-rosa" src="img/fx/batom-rosa.webp" alt="" width="156" height="460" loading="eager" decoding="async">
-        <img class="fx fx-dior" src="img/fx/batom-dior.webp" alt="" width="460" height="389" decoding="async">
-        <img class="fx fx-rimel" src="img/fx/rimel.webp" alt="" width="139" height="460" decoding="async">
+        <img class="fx fx-dior" src="img/fx/batom-vermelho.webp" alt="" width="460" height="264" decoding="async">
         <img class="fx fx-pincel1" src="img/fx/pincel-1.webp" alt="" width="218" height="460" decoding="async">
         <img class="fx fx-pincel2" src="img/fx/pincel-2.webp" alt="" width="183" height="460" decoding="async">
         <img class="fx fx-paleta" src="img/fx/paleta.webp" alt="" width="365" height="460" decoding="async">
@@ -66,6 +65,13 @@
         <img class="avatar" id="avatar" src="img/avatar.webp" alt="Avatar BioMake segurando uma sacola" width="416" height="939" fetchpriority="high">
       </div>
     </div>
+
+    <section class="floatfield" id="brandField" aria-label="Marcas e maquiagens">
+      <img class="ff ff-vermelho" src="img/fx/batom-vermelho.webp" alt="" width="460" height="264" loading="lazy" decoding="async">
+      <img class="ff ff-paleta" src="img/fx/paleta.webp" alt="" width="365" height="460" loading="lazy" decoding="async">
+      <img class="ff ff-pincel" src="img/fx/pincel-2.webp" alt="" width="183" height="460" loading="lazy" decoding="async">
+      <img class="ff ff-rosa" src="img/fx/batom-rosa.webp" alt="" width="156" height="460" loading="lazy" decoding="async">
+    </section>
 
     <div class="marquee" aria-hidden="true">
       <div class="marquee-track">
@@ -91,14 +97,6 @@
       <div class="rail" id="homeRail"></div>
     </section>
 
-    <section class="block">
-      <div class="block-head reveal">
-        <h2>Marcas que você ama</h2>
-        <button class="link" data-go="marcas">Ver todas ›</button>
-      </div>
-      <div class="brand-strip reveal" id="brandStrip"></div>
-    </section>
-
     <footer class="footer">
       <img src="img/logo.webp" alt="BioMake" width="120" height="52">
       <p>© <span id="year"></span> BioMake · Maquiagens, acessórios e muito mais.</p>
@@ -114,17 +112,6 @@
       <p class="lead">5 cidades, o mesmo preço: qualquer produto por R$&nbsp;10,00.</p>
     </div>
     <div class="store-grid" id="storeGrid"></div>
-  </section>
-
-  <!-- ============ MARCAS ============ -->
-  <section class="view" id="view-marcas" data-view="marcas">
-    <div class="page-head">
-      <p class="eyebrow">Nas prateleiras</p>
-      <h1>Marcas que você ama</h1>
-      <p class="lead">As principais marcas de beleza você encontra na BioMake.</p>
-    </div>
-    <div class="brand-grid" id="brandGrid"></div>
-    <p class="fine">Marcas citadas pertencem aos seus respectivos proprietários. Os produtos variam por loja.</p>
   </section>
 
 </main>
@@ -144,10 +131,6 @@
   <button class="tab" data-go="lojas" aria-label="Lojas">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s7-6.2 7-11.5A7 7 0 0 0 5 9.5C5 14.8 12 21 12 21Z"/><circle cx="12" cy="9.5" r="2.6"/></svg>
     <span>Lojas</span>
-  </button>
-  <button class="tab" data-go="marcas" aria-label="Marcas">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.5l1.9 4.6 4.9.4-3.7 3.2 1.1 4.8L12 14l-4.2 2.5 1.1-4.8L5.2 8.5l4.9-.4L12 3.5Z"/><path d="M19 17.5v3M17.5 19h3"/></svg>
-    <span>Marcas</span>
   </button>
   <button class="tab tab-wa" data-wa aria-label="Falar no WhatsApp">
     <svg viewBox="0 0 24 24" fill="currentColor"><use href="#i-wa"/></svg>
@@ -169,6 +152,6 @@
   </div>
 </div>
 
-<script src="app.js?v=5" defer></script>
+<script src="app.js?v=6" defer></script>
 </body>
 </html>

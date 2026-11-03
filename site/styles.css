@@ -87,9 +87,9 @@ h1,h2,h3{letter-spacing:-.02em}
 .cta{display:flex;flex-direction:column;gap:12px;margin:22px 0 0}
 .cities{display:none}
 
-.hero-stage{position:relative;z-index:2;display:grid;place-items:center;margin-top:10px;height:min(34svh,300px)}
+.hero-stage{position:relative;z-index:2;display:grid;place-items:center;margin-top:10px;--sh:min(34svh,300px);height:var(--sh)}
 .hero-stage .avatar{
-  position:relative;z-index:2;height:100%;width:auto;
+  position:relative;z-index:2;height:var(--sh);width:auto;max-width:none;
   animation:float 6s ease-in-out infinite;
 }
 /* fotos reais de maquiagem flutuando em volta do avatar (só transform/opacity: roda na GPU) */
@@ -160,10 +160,6 @@ h1,h2,h3{letter-spacing:-.02em}
 .rail-card .cap b{display:block;font-size:24px;font-weight:800;letter-spacing:-.02em}
 .rail-card .cap span{font-size:14px;color:var(--muted)}
 
-/* marcas (home) */
-.brand-strip{display:flex;flex-wrap:wrap;gap:10px}
-.brand-strip span{padding:0 20px;min-height:46px;display:inline-flex;align-items:center;border-radius:999px;background:var(--glass);border:1px solid var(--glass-line);font-weight:700;font-size:16px}
-
 .footer{position:relative;z-index:2;text-align:center;padding:64px 20px 6px;color:var(--muted);font-size:13px}
 .footer img{height:44px;width:auto;margin:0 auto 12px;opacity:.9}
 .footer .credits{margin-top:6px;font-size:12px;opacity:.7}
@@ -194,36 +190,49 @@ h1,h2,h3{letter-spacing:-.02em}
 .store .actions .btn{width:100%;padding:0 12px}
 .store .actions .wa,.store .actions .only{grid-column:1/-1}
 
-/* ---------- marcas ---------- */
-.brand-grid{display:grid;gap:14px;grid-template-columns:repeat(2,1fr);padding:0 var(--gut);max-width:1240px;margin:0 auto}
-.brand-tile{
-  position:relative;aspect-ratio:1.1;border-radius:26px;display:grid;place-items:center;text-align:center;padding:14px;overflow:hidden;
-  background:linear-gradient(150deg,rgba(90,40,130,.85),rgba(44,14,70,.92));
-  border:1px solid var(--glass-line);box-shadow:0 14px 34px rgba(10,0,25,.4);
-}
-.brand-tile::before{content:"";position:absolute;width:140%;aspect-ratio:1;left:-20%;top:-70%;background:radial-gradient(circle,var(--tint,rgba(250,213,79,.28)),transparent 60%)}
-.brand-tile span{position:relative;font-size:clamp(24px,7vw,38px);line-height:1}
+.bf span{position:relative;line-height:1}
 .bt-ruby span{font-family:"Playfair Display",Georgia,serif;font-style:italic;font-weight:600;color:#ffb3d1}
-.bt-mahav span{font-weight:800;letter-spacing:.3em;text-transform:uppercase;font-size:clamp(18px,5vw,30px)}
+.bt-mahav span{font-weight:800;letter-spacing:.24em;text-transform:uppercase}
 .bt-fenzza span{font-family:Cinzel,serif;font-weight:800;letter-spacing:.1em;color:var(--gold)}
 .bt-derma span{font-weight:400;letter-spacing:-.03em;text-transform:lowercase}
 .bt-derma span b{font-weight:800;color:#8ef0d0}
-.bt-dapop span{font-family:Anton,Impact,sans-serif;letter-spacing:.06em;text-transform:uppercase;color:#ff9be0;font-size:clamp(30px,9vw,50px)}
+.bt-dapop span{font-family:Anton,Impact,sans-serif;letter-spacing:.06em;text-transform:uppercase;color:#ff9be0}
 .bt-play span{font-weight:800;font-style:italic;text-transform:uppercase;letter-spacing:.04em}
-.fine{padding:22px var(--gut) 0;max-width:1240px;margin:0 auto;color:var(--muted);font-size:13px}
+
+/* ---------- marcas + maquiagens flutuando ---------- */
+.floatfield{position:relative;z-index:2;height:min(94vw,400px);max-width:1100px;margin:6px auto 0;overflow:hidden;content-visibility:auto;contain-intrinsic-size:auto 360px}
+.ff,.bf{position:absolute;animation:fx var(--t,6s) ease-in-out var(--dl,0s) infinite;rotate:var(--r,0deg)}
+.ff{height:var(--h,30%);width:auto;pointer-events:none}
+.bf{
+  display:inline-flex;align-items:center;justify-content:center;padding:13px 20px;border-radius:20px;white-space:nowrap;
+  font-size:clamp(19px,5.6vw,30px);
+  background:linear-gradient(150deg,rgba(104,48,148,.92),rgba(48,14,76,.95));
+  border:1px solid var(--glass-line);box-shadow:0 12px 28px rgba(10,0,25,.45);
+}
+.bf::before{content:"";position:absolute;inset:0;border-radius:inherit;background:radial-gradient(circle at 20% 0%,var(--tint,rgba(250,213,79,.28)),transparent 70%)}
+.bf-1{left:5%;top:5%;--r:-4deg;--t:6.4s}
+.bf-2{right:4%;top:2%;--r:3deg;--t:5.6s;--dl:-1s}
+.bf-3{left:30%;top:33%;--r:-2deg;--t:7s;--dl:-2s;z-index:2}
+.bf-4{left:2%;top:55%;--r:3deg;--t:6s;--dl:-3s}
+.bf-5{right:3%;top:48%;--r:-5deg;--t:5.8s;--dl:-.5s}
+.bf-6{left:24%;top:80%;--r:2deg;--t:6.6s;--dl:-2.5s}
+.ff-vermelho{--h:25%;left:36%;top:-2%;--r:-8deg;--t:7s}
+.ff-paleta{--h:34%;right:5%;top:20%;--r:-10deg;--t:6.2s;--dl:-1.5s}
+.ff-pincel{--h:38%;left:-1%;top:28%;--r:-26deg;--t:7.2s;--dl:-3s}
+.ff-rosa{--h:34%;right:20%;top:62%;--r:16deg;--t:6.6s;--dl:-2s}
 
 /* ---------- barra de abas ---------- */
 .tabbar{
   position:fixed;left:50%;bottom:calc(10px + var(--safe-b));transform:translateX(-50%);z-index:60;
   width:min(calc(100vw - 20px),480px);height:var(--tab-h);padding:6px;
-  display:grid;grid-template-columns:repeat(4,1fr);
+  display:grid;grid-template-columns:repeat(3,1fr);
   border-radius:36px;
   background:linear-gradient(180deg,rgba(76,32,108,.94),rgba(34,10,54,.97));
   border:1px solid rgba(255,255,255,.2);
   box-shadow:0 14px 36px rgba(8,0,20,.6),inset 0 1px 0 rgba(255,255,255,.26);
 }
 .tab-ind{
-  position:absolute;top:6px;bottom:6px;left:6px;width:calc((100% - 12px)/4);border-radius:30px;
+  position:absolute;top:6px;bottom:6px;left:6px;width:calc((100% - 12px)/3);border-radius:30px;
   background:linear-gradient(180deg,rgba(255,255,255,.26),rgba(255,255,255,.1));
   box-shadow:inset 0 1px 0 rgba(255,255,255,.4);
   transform:translateX(calc(var(--i,0) * 100%));
@@ -269,14 +278,15 @@ h1,h2,h3{letter-spacing:-.02em}
 /* ================= telas médias e grandes ================= */
 @media (min-width:700px){
   :root{--gut:max(24px,5vw)}
-  .hero-stage{height:min(40svh,380px)}
+  .hero-stage{--sh:min(40svh,380px)}
   .fx-pincel2{display:block;left:26%;top:-10%;height:34%;--r:24deg;--t:6.8s;--dl:-4s}
   .cta{flex-direction:row;flex-wrap:wrap}
   .btn{padding:0 32px}
   .cities{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px}
   .cities li{font-size:13px;padding:7px 13px;border-radius:999px;background:var(--glass);border:1px solid var(--glass-line);color:var(--muted)}
   .store-grid{grid-template-columns:repeat(2,1fr)}
-  .brand-grid{grid-template-columns:repeat(3,1fr);gap:20px}
+  .floatfield{height:420px}
+  .bf{font-size:30px;padding:16px 28px}
   .price-card .btn{width:auto}
 }
 @media (min-width:900px){
@@ -286,7 +296,7 @@ h1,h2,h3{letter-spacing:-.02em}
   .hero{grid-template-columns:1.05fr .95fr;align-items:center;min-height:min(100svh,900px);padding-top:90px;gap:20px}
   .hero h1{font-size:clamp(48px,6vw,92px)}
   .lead{font-size:clamp(18px,1.8vw,22px)}
-  .hero-stage{height:min(56vh,540px);margin-top:0}
+  .hero-stage{--sh:min(56vh,540px);margin-top:0}
   .fx-paleta{display:block;right:30%;bottom:-6%;height:24%;--r:-8deg;--t:7.4s;--dl:-1s;z-index:3}
   .fx-rosa{height:42%}.fx-dior{height:22%;right:0}.fx-rimel{height:38%}.fx-pincel1{height:42%}
   .ring{width:min(46vw,620px)}
@@ -298,7 +308,7 @@ h1,h2,h3{letter-spacing:-.02em}
 /* computador com mouse: vidro fosco e inclinação 3D */
 @media (min-width:900px) and (hover:hover){
   .topbar.scrolled{background:rgba(28,5,48,.55);-webkit-backdrop-filter:blur(22px) saturate(180%);backdrop-filter:blur(22px) saturate(180%)}
-  .btn.glass,.brand-strip span{-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px)}
+  .btn.glass{-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px)}
   .tabbar{-webkit-backdrop-filter:blur(30px) saturate(190%);backdrop-filter:blur(30px) saturate(190%);background:linear-gradient(180deg,rgba(80,34,112,.55),rgba(36,10,58,.62))}
   .hero-stage .avatar{filter:drop-shadow(0 28px 30px rgba(0,0,0,.5))}
   .fx{filter:drop-shadow(0 12px 14px rgba(0,0,0,.4));transform:translate(calc(var(--mx,0) * var(--k,-14px)),calc(var(--my,0) * var(--k,-14px)));transition:transform .25s ease-out}
@@ -310,5 +320,4 @@ h1,h2,h3{letter-spacing:-.02em}
   .tilt.live .glare{opacity:1}
   .store .photo img{transition:transform .8s cubic-bezier(.2,.8,.2,1)}
   .store:hover .photo img{transform:scale(1.05)}
-  .brand-tile span{transform:translateZ(40px)}
 }
