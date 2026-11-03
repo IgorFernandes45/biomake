@@ -303,6 +303,29 @@ h1,h2,h3{letter-spacing:-.02em}
 .badge{position:absolute;top:6px;left:calc(50% + 6px);min-width:18px;height:18px;padding:0 5px;border-radius:9px;background:#e0245e;color:#fff;font-style:normal;font-size:11px;font-weight:800;display:grid;place-items:center;box-shadow:0 0 0 2px rgba(36,10,58,.9)}
 @media (min-width:900px){.tabbar{bottom:24px}}
 
+/* ---------- WhatsApp ---------- */
+.wa-fab{
+  position:fixed;right:14px;bottom:calc(var(--tab-h) + 30px + var(--safe-b));z-index:59;
+  display:flex;align-items:center;gap:8px;height:54px;padding:0 18px 0 14px;border-radius:27px;
+  background:linear-gradient(180deg,#34e57a,#1faa52);color:#fff;font-weight:700;font-size:15px;
+  box-shadow:0 12px 30px rgba(31,170,82,.45),inset 0 1px 0 rgba(255,255,255,.4);
+  transition:transform .25s cubic-bezier(.3,1.6,.4,1);
+}
+.wa-fab:active{transform:scale(.93)}
+.wa-fab::after{content:"";position:absolute;inset:0;border-radius:inherit;border:2px solid #34e57a;animation:waPulse 2.4s ease-out infinite;pointer-events:none}
+@keyframes waPulse{0%{transform:scale(1);opacity:.8}100%{transform:scale(1.35,1.6);opacity:0}}
+@media (max-width:420px){.wa-fab{padding:0;width:54px;justify-content:center}.wa-fab span{display:none}}
+@media (min-width:900px){.wa-fab{right:28px;bottom:40px}}
+.wa-intro{margin-bottom:14px}
+.wa-list{display:flex;flex-direction:column;gap:10px}
+.wa-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 16px;border-radius:18px;background:rgba(255,255,255,.08);border:1px solid var(--glass-line);transition:transform .2s,background .2s}
+.wa-row:hover{background:rgba(37,211,102,.16)}
+.wa-row:active{transform:scale(.98)}
+.wa-txt b{display:block;font-size:16px}
+.wa-txt small{color:var(--muted);font-size:14px}
+.wa-go{background:#25d366;color:#06361a;font-weight:700;font-size:14px;padding:9px 14px;border-radius:999px;white-space:nowrap}
+.btn svg{flex-shrink:0}
+
 /* ---------- sheet ---------- */
 .sheet-wrap{position:fixed;inset:0;z-index:100;display:flex;align-items:flex-end;justify-content:center}
 .sheet-wrap[hidden]{display:none}

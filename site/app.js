@@ -281,8 +281,23 @@
     req.then(function () { toast(editing ? 'Promoção atualizada ✓' : 'Promoção cadastrada ✓'); resetForm(); loadAdmin(); loadPromos(); }).catch(function (er) { toast(er.message); });
   });
 
+  /* ================= WHATSAPP ================= */
+  var waSheet = $('#waSheet');
+  function renderWa() {
+    var box = $('#waList');
+    STORES.filter(function (s) { return s.phone; }).forEach(function (s) {
+      var a = el('a', 'wa-row'); a.href = waUrl(s.phone); a.target = '_blank'; a.rel = 'noopener';
+      var t = el('span', 'wa-txt'); t.appendChild(el('b', '', s.city + ' · ' + s.uf)); t.appendChild(el('small', '', fmtPhone(s.phone)));
+      a.appendChild(t); a.appendChild(el('span', 'wa-go', 'Chamar ›')); box.appendChild(a);
+    });
+  }
+  function toggleWa(open) { waSheet.hidden = !open; document.body.style.overflow = open ? 'hidden' : ''; }
+  document.addEventListener('click', function (e) { if (e.target.closest('[data-wa]')) toggleWa(true); });
+  waSheet.addEventListener('click', function (e) { if (e.target.closest('[data-close]')) toggleWa(false); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !waSheet.hidden) toggleWa(false); });
+
   /* ================= INICIALIZAÇÃO ================= */
-  renderStores(); renderBrands();
+  renderStores(); renderBrands(); renderWa();
   $('#year').textContent = new Date().getFullYear();
   var first = (location.hash || '').replace('#', '');
   go(VIEWS.indexOf(first) >= 0 ? first : 'inicio');
