@@ -15,7 +15,7 @@
   try {
     renderer = new T.WebGLRenderer({ canvas: canvas, antialias: !mobile, alpha: true, powerPreference: mobile ? 'default' : 'high-performance' });
   } catch (e) { canvas.remove(); return; }
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, mobile ? 1.5 : 2));
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, mobile ? 1.25 : 2));
   renderer.outputEncoding = T.sRGBEncoding;
   renderer.toneMapping = T.ACESFilmicToneMapping;
   renderer.toneMappingExposure = 1.2;
@@ -219,7 +219,7 @@
 
   /* ---------- layouts por tela (frações da metade visível) ---------- */
   var view = 'inicio', wide = true, hw = 7, hh = 4.4, unit = .9;
-  var h0 = (location.hash || '').slice(1); if (h0 === 'lojas' || h0 === 'marcas' || h0 === 'promocoes') view = h0;
+  var h0 = (location.hash || '').slice(1); if (h0 === 'lojas' || h0 === 'marcas') view = h0;
   var L = {
     inicio_wide: {
       heart:  [.64,  .02, -4.5, 1.15, 0],
@@ -250,7 +250,7 @@
       { heart: [.85, -.6, -10, .5, 0], lipA: [-.95, -.5, -2, .5, .5], lipB: [.95, .55, -2, .45, -.4], brush: [-.95, -.1, -3, .45, .6], compact: [.95, -.1, -2, .5, 0], polish: [0, -.98, -3, .38, .2], palette: [.5, -.97, -3, .4, .1] }
     ]
   };
-  var variant = { lojas: 0, marcas: 1, promocoes: 2 };
+  var variant = { lojas: 0, marcas: 1 };
 
   function layoutFor() {
     if (view === 'inicio') return L[wide ? 'inicio_wide' : 'inicio_narrow'];
@@ -285,12 +285,6 @@
   var mx = 0, my = 0, tx = 0, ty = 0, scrollY = 0;
   window.addEventListener('pointermove', function (e) { tx = (e.clientX / W) * 2 - 1; ty = (e.clientY / H) * 2 - 1; }, { passive: true });
   window.addEventListener('scroll', function () { scrollY = window.scrollY; }, { passive: true });
-  if (window.DeviceOrientationEvent && 'ontouchstart' in window) {
-    window.addEventListener('deviceorientation', function (e) {
-      if (e.gamma == null) return;
-      tx = Math.max(-1, Math.min(1, e.gamma / 30)); ty = Math.max(-1, Math.min(1, (e.beta - 45) / 40));
-    }, { passive: true });
-  }
 
   var clock = new T.Clock(), running = true, paused = false, acc = 0, shown = false, minDt = lowEnd ? 1 / 30 - .004 : 0;
   document.addEventListener('visibilitychange', function () { running = !document.hidden; if (running) clock.getDelta(); });
@@ -299,6 +293,11 @@
   function frame() {
     requestAnimationFrame(frame);
     if (!running || paused) return;
+    // celular: o 3D só roda no início e perto do topo; nas outras abas e mais abaixo ele descansa (a página rola liso)
+    if (mobile && (view !== 'inicio' || scrollY > H * 1.25)) {
+      if (shown) { shown = false; canvas.classList.remove('on'); }
+      clock.getDelta(); acc = 0; return;
+    }
     acc += clock.getDelta();
     if (acc < minDt) return;
     tick(Math.min(acc, .05)); acc = 0;

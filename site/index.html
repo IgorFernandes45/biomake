@@ -6,17 +6,22 @@
 <title>BioMake — Qualquer produto por R$ 10,00</title>
 <meta name="description" content="BioMake: maquiagens, acessórios e muito mais, tudo por R$ 10,00. Lojas em Petrolina, Afrânio, Capim Grosso, Santana do Sobrado e Cajazeiras.">
 <meta name="theme-color" content="#2a0a3d">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="BioMake">
 <meta property="og:title" content="BioMake — Qualquer produto por R$ 10,00">
 <meta property="og:description" content="Maquiagens, acessórios e muito mais. Venha conhecer a BioMake!">
 <meta property="og:image" content="img/icon-512.png">
+<link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" type="image/png" href="img/favicon.png">
 <link rel="apple-touch-icon" href="img/apple-touch-icon.png">
+<link rel="preload" as="image" href="img/avatar.webp" fetchpriority="high">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="preload" as="image" href="img/avatar.webp" fetchpriority="high">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Cinzel:wght@800&family=Inter:wght@400;600;700;800&family=Playfair+Display:ital,wght@1,600&display=swap" media="print" onload="this.media='all'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Cinzel:wght@800&family=Inter:wght@400;600;700;800&family=Playfair+Display:ital,wght@1,600&display=swap"></noscript>
-<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="styles.css?v=4">
 </head>
 <body>
 
@@ -27,9 +32,6 @@
   <a class="brand" href="#inicio" data-go="inicio" aria-label="BioMake — início">
     <img src="img/logo.webp" alt="BioMake" width="132" height="58">
   </a>
-  <button class="pill-btn" data-go="promocoes" aria-label="Ver promoções">
-    <span class="dot" id="promoDot" hidden></span> R$ 10,00
-  </button>
 </header>
 
 <main>
@@ -38,15 +40,17 @@
   <section class="view active" id="view-inicio" data-view="inicio">
     <div class="hero">
       <div class="hero-copy">
-        <p class="eyebrow reveal">Nova experiência de beleza</p>
-        <h1 class="reveal" style="--d:.08s">Venha conhecer a <span class="gold">BioMake</span></h1>
-        <p class="lead reveal" style="--d:.16s">Maquiagens, acessórios e muito mais.<br><strong>Qualquer produto por R$&nbsp;10,00.</strong></p>
-        <div class="cta reveal" style="--d:.24s">
-          <button class="btn primary" data-go="promocoes">Ver promoções</button>
+        <p class="eyebrow">Nova experiência de beleza</p>
+        <h1>Venha conhecer a <span class="gold">BioMake</span></h1>
+        <p class="lead">Maquiagens, acessórios e muito mais.<br><strong>Qualquer produto por R$&nbsp;10,00.</strong></p>
+        <div class="cta">
+          <button class="btn wa" data-wa>
+            <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor" aria-hidden="true"><use href="#i-wa"/></svg>
+            Falar no WhatsApp
+          </button>
           <button class="btn glass" data-go="lojas">Encontrar uma loja</button>
-          <button class="btn wa" data-wa><svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg> Falar no WhatsApp</button>
         </div>
-        <ul class="cities reveal" style="--d:.32s">
+        <ul class="cities">
           <li>Petrolina</li><li>Afrânio</li><li>Capim Grosso</li><li>Santana do Sobrado</li><li>Cajazeiras</li>
         </ul>
       </div>
@@ -54,7 +58,6 @@
         <div class="ring"></div>
         <img class="avatar" id="avatar" src="img/avatar.webp" alt="Avatar BioMake segurando uma sacola" width="416" height="939" fetchpriority="high">
       </div>
-      <div class="scroll-hint" aria-hidden="true"><span></span></div>
     </div>
 
     <div class="marquee" aria-hidden="true">
@@ -116,24 +119,12 @@
     <p class="fine">Marcas citadas pertencem aos seus respectivos proprietários. Os produtos variam por loja.</p>
   </section>
 
-  <!-- ============ PROMOÇÕES ============ -->
-  <section class="view" id="view-promocoes" data-view="promocoes">
-    <div class="page-head">
-      <p class="eyebrow">Ofertas rolando agora</p>
-      <h1>Promoções</h1>
-      <p class="lead">Atualizadas pela equipe BioMake. Corra, elas não duram para sempre!</p>
-    </div>
-    <div class="chips" id="promoChips" role="tablist" aria-label="Filtrar por loja"></div>
-    <div class="promo-list" id="promoList" aria-live="polite"></div>
-    <div class="admin-entry">
-      <button class="link lock" id="openAdmin">
-        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
-        Área da loja
-      </button>
-    </div>
-  </section>
-
 </main>
+
+<!-- ícones -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-wa" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></symbol>
+</svg>
 
 <!-- ============ BARRA DE ABAS ============ -->
 <nav class="tabbar" id="tabbar" aria-label="Navegação principal">
@@ -150,75 +141,13 @@
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.5l1.9 4.6 4.9.4-3.7 3.2 1.1 4.8L12 14l-4.2 2.5 1.1-4.8L5.2 8.5l4.9-.4L12 3.5Z"/><path d="M19 17.5v3M17.5 19h3"/></svg>
     <span>Marcas</span>
   </button>
-  <button class="tab" data-go="promocoes" aria-label="Promoções">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20.6 13.4 13.4 20.6a2 2 0 0 1-2.8 0L3.5 13.5V3.5h10l7.1 7.1a2 2 0 0 1 0 2.8Z"/><circle cx="8" cy="8" r="1.3"/></svg>
-    <span>Promoções</span>
-    <em class="badge" id="promoBadge" hidden>0</em>
+  <button class="tab tab-wa" data-wa aria-label="Falar no WhatsApp">
+    <svg viewBox="0 0 24 24" fill="currentColor"><use href="#i-wa"/></svg>
+    <span>WhatsApp</span>
   </button>
 </nav>
 
-<!-- ============ ÁREA DA LOJA (cadastro de promoções) ============ -->
-<div class="sheet-wrap" id="sheet" hidden>
-  <div class="sheet-backdrop" data-close></div>
-  <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetTitle">
-    <div class="grabber"></div>
-    <div class="sheet-head">
-      <h2 id="sheetTitle">Área da loja</h2>
-      <button class="icon-btn" data-close aria-label="Fechar">✕</button>
-    </div>
-
-    <form id="loginForm" class="stack">
-      <p class="muted">Digite a senha da equipe para cadastrar e editar promoções.</p>
-      <input class="field" type="password" id="pin" placeholder="Senha" autocomplete="current-password" required>
-      <p class="err" id="loginErr" hidden></p>
-      <button class="btn primary block-btn" type="submit">Entrar</button>
-    </form>
-
-    <div id="adminPanel" hidden>
-      <form id="promoForm" class="stack">
-        <input type="hidden" id="pId">
-        <label class="lbl">Título
-          <input class="field" id="pTitle" maxlength="60" placeholder="Ex.: Combo de batons" required>
-        </label>
-        <label class="lbl">Descrição
-          <textarea class="field" id="pDesc" maxlength="240" rows="3" placeholder="Explique a promoção"></textarea>
-        </label>
-        <div class="row2">
-          <label class="lbl">Destaque
-            <input class="field" id="pHighlight" maxlength="24" placeholder="R$ 10,00 · -30%">
-          </label>
-          <label class="lbl">Válida até
-            <input class="field" id="pUntil" type="date">
-          </label>
-        </div>
-        <div class="row2">
-          <label class="lbl">Loja
-            <select class="field" id="pStore"></select>
-          </label>
-          <label class="lbl">Cor
-            <select class="field" id="pTheme">
-              <option value="gold">Dourado</option>
-              <option value="pink">Rosa</option>
-              <option value="violet">Violeta</option>
-              <option value="white">Branco</option>
-            </select>
-          </label>
-        </div>
-        <label class="check"><input type="checkbox" id="pActive" checked> Promoção ativa (visível no site)</label>
-        <div class="row-actions">
-          <button class="btn primary block-btn" type="submit" id="pSave">Cadastrar promoção</button>
-          <button class="btn glass block-btn" type="button" id="pCancel" hidden>Cancelar edição</button>
-        </div>
-      </form>
-      <h3 class="sub">Promoções cadastradas</h3>
-      <div id="adminList" class="admin-list"></div>
-      <button class="link danger" id="logout">Sair da área da loja</button>
-    </div>
-  </div>
-</div>
-
-<button class="wa-fab" id="waFab" data-wa aria-label="Falar no WhatsApp"><svg viewBox="0 0 24 24" width="28" height="28" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg><span>WhatsApp</span></button>
-
+<!-- ============ WHATSAPP ============ -->
 <div class="sheet-wrap" id="waSheet" hidden>
   <div class="sheet-backdrop" data-close></div>
   <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="waTitle">
@@ -232,17 +161,15 @@
   </div>
 </div>
 
-<div class="toast" id="toast" role="status" aria-live="polite"></div>
-
-<script src="app.js"></script>
+<script src="app.js?v=4" defer></script>
 <script>
-// A página abre primeiro; o 3D (three.js ~600 KB) só carrega quando o navegador está livre.
+// A página abre primeiro; o 3D (three.js) só carrega quando o navegador está livre.
 (function () {
   var c = navigator.connection || {};
   if (c.saveData || /(^|-)2g$/.test(c.effectiveType || '')) { var g = document.getElementById('gl'); if (g) g.remove(); return; }
   function add(src, next) { var s = document.createElement('script'); s.src = src; s.onload = next; document.body.appendChild(s); }
-  function start() { add('vendor/three.min.js', function () { add('scene.js'); }); }
-  function idle() { (window.requestIdleCallback || function (f) { setTimeout(f, 300); })(start, { timeout: 2000 }); }
+  function start() { add('vendor/three.min.js', function () { add('scene.js?v=4'); }); }
+  function idle() { (window.requestIdleCallback || function (f) { setTimeout(f, 300); })(start, { timeout: 2500 }); }
   if (document.readyState === 'complete') idle(); else window.addEventListener('load', idle);
 })();
 </script>
