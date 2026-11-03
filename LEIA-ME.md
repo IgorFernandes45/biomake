@@ -14,4 +14,3 @@ Dê dois cliques em `abrir-site.bat` (precisa do Node.js) ou rode `node tools/se
 
 ## Publicar
 - **Vercel:** o `vercel.json` já aponta a pasta `site/`. Todo push na `main` publica sozinho.
-- **GitHub Pages:** o workflow `.github/workflows/pages.yml` publica a pasta `site/` a cada push (ative em Settings → Pages → Source: GitHub Actions).
