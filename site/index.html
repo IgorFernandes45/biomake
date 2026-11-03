@@ -13,7 +13,9 @@
 <link rel="apple-touch-icon" href="img/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Anton&family=Cinzel:wght@600;800&family=Inter:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@1,600&display=swap" rel="stylesheet">
+<link rel="preload" as="image" href="img/avatar.webp" fetchpriority="high">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Cinzel:wght@800&family=Inter:wght@400;600;700;800&family=Playfair+Display:ital,wght@1,600&display=swap" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Cinzel:wght@800&family=Inter:wght@400;600;700;800&family=Playfair+Display:ital,wght@1,600&display=swap"></noscript>
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -232,8 +234,17 @@
 
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-<script src="scene.js"></script>
 <script src="app.js"></script>
+<script>
+// A página abre primeiro; o 3D (three.js ~600 KB) só carrega quando o navegador está livre.
+(function () {
+  var c = navigator.connection || {};
+  if (c.saveData || /(^|-)2g$/.test(c.effectiveType || '')) { var g = document.getElementById('gl'); if (g) g.remove(); return; }
+  function add(src, next) { var s = document.createElement('script'); s.src = src; s.onload = next; document.body.appendChild(s); }
+  function start() { add('vendor/three.min.js', function () { add('scene.js'); }); }
+  function idle() { (window.requestIdleCallback || function (f) { setTimeout(f, 300); })(start, { timeout: 2000 }); }
+  if (document.readyState === 'complete') idle(); else window.addEventListener('load', idle);
+})();
+</script>
 </body>
 </html>

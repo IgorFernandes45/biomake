@@ -5,21 +5,21 @@
 
   /* ================= DADOS ================= */
   var STORES = [
-    { slug: 'petrolina', city: 'Petrolina', uf: 'PE', img: 'img/petrolina.jpg',
+    { slug: 'petrolina', city: 'Petrolina', uf: 'PE', img: 'img/petrolina.webp',
       units: [
         { name: 'Loja 2', addr: 'Av. Barão do Rio Branco, 844 — Centro', map: 'Av. Barão do Rio Branco, 844, Centro, Petrolina - PE' },
         { name: 'Loja 1', addr: 'Av. dos Guararapes', map: 'Av. dos Guararapes, Petrolina - PE' }
       ] },
-    { slug: 'afranio', city: 'Afrânio', uf: 'PE', img: 'img/afranio.jpg',
+    { slug: 'afranio', city: 'Afrânio', uf: 'PE', img: 'img/afranio.webp',
       units: [{ name: '', addr: 'Rua José dos Operários, 284', map: 'Rua José dos Operários, 284, Afrânio - PE' }],
       ref: 'Em frente à NDL', phone: '87988298359', ig: 'biomakeafranio' },
-    { slug: 'capim-grosso', city: 'Capim Grosso', uf: 'BA', img: 'img/capim-grosso.jpg',
+    { slug: 'capim-grosso', city: 'Capim Grosso', uf: 'BA', img: 'img/capim-grosso.webp',
       units: [{ name: '', addr: 'Av. Otaviano Ferreira — Praça Central', map: 'Av. Otaviano Ferreira, Capim Grosso - BA' }],
       ref: 'Antigo prédio da Coelba', phone: '74999693712', ig: 'biomake.cg' },
-    { slug: 'santana-do-sobrado', city: 'Santana do Sobrado', uf: 'BA', img: 'img/santana-do-sobrado.jpg',
+    { slug: 'santana-do-sobrado', city: 'Santana do Sobrado', uf: 'BA', img: 'img/santana-do-sobrado.webp',
       units: [{ name: '', addr: 'Travessa Belo Jardim — Praça Principal', map: 'Travessa Belo Jardim, Santana do Sobrado - BA' }],
       ref: 'Nos pontos comerciais do Gavião', phone: '', ig: 'biomakecn' },
-    { slug: 'cajazeiras', city: 'Cajazeiras', uf: 'PB', img: 'img/cajazeiras.jpg',
+    { slug: 'cajazeiras', city: 'Cajazeiras', uf: 'PB', img: 'img/cajazeiras.webp',
       units: [{ name: '', addr: 'Engenheiro Carlos Pires de Sá, 288 — Centro', map: 'Engenheiro Carlos Pires de Sá, 288, Centro, Cajazeiras - PB' }],
       ref: 'Em frente ao CEDIC', phone: '83981732355', ig: 'biomakecz' }
   ];
@@ -42,6 +42,7 @@
   function fmtPhone(d) { return d.length === 11 ? '(' + d.slice(0, 2) + ') ' + d.slice(2, 7) + '-' + d.slice(7) : d; }
   function mapUrl(q) { return 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(q); }
   function waUrl(d) { return 'https://wa.me/55' + d + '?text=' + encodeURIComponent('Olá! Vim pelo site da BioMake 💜'); }
+  function scenePause(p) { if (window.BioScene) BioScene.pause(p); }   // com uma janela aberta o 3D fica parado (poupa bateria)
   function toast(msg) {
     var t = $('#toast'); t.textContent = msg; t.classList.add('show');
     clearTimeout(toast._t); toast._t = setTimeout(function () { t.classList.remove('show'); }, 2600);
@@ -85,7 +86,7 @@
     STORES.forEach(function (s) {
       // cartão da página Lojas
       var card = el('article', 'store tilt'); card.dataset.store = s.slug;
-      var photo = el('div', 'photo'), img = el('img'); img.src = s.img; img.alt = 'Fachada da BioMake ' + s.city; img.loading = 'lazy'; img.width = 844; img.height = 1500;
+      var photo = el('div', 'photo'), img = el('img'); img.src = s.img; img.alt = 'Fachada da BioMake ' + s.city; img.loading = 'lazy'; img.width = 640; img.height = 1138;
       photo.appendChild(img); photo.appendChild(el('span', 'uf', s.uf)); card.appendChild(photo);
       var body = el('div', 'body'); body.appendChild(el('h3', '', s.city));
       s.units.forEach(function (u) {
@@ -106,7 +107,7 @@
 
       // cartão do carrossel da home
       var rc = el('button', 'rail-card'); rc.dataset.go = 'lojas'; rc.dataset.store = s.slug; rc.setAttribute('aria-label', 'Ver loja de ' + s.city);
-      var ri = el('img'); ri.src = s.img; ri.alt = ''; ri.loading = 'lazy'; ri.width = 844; ri.height = 1500; rc.appendChild(ri);
+      var ri = el('img'); ri.src = s.img; ri.alt = ''; ri.loading = 'lazy'; ri.width = 640; ri.height = 1138; rc.appendChild(ri);
       var cap = el('div', 'cap'); cap.appendChild(el('b', '', s.city)); cap.appendChild(el('span', '', s.uf === 'PE' ? 'Pernambuco' : s.uf === 'BA' ? 'Bahia' : 'Paraíba'));
       rc.appendChild(cap); rail.appendChild(rc);
     });
@@ -211,10 +212,10 @@
   /* ---------- área da loja (cadastro) ---------- */
   var sheet = $('#sheet');
   function openSheet() {
-    sheet.hidden = false; document.body.style.overflow = 'hidden';
+    sheet.hidden = false; document.body.style.overflow = 'hidden'; scenePause(true);
     if (pin) tryLogin(pin, true); else { $('#loginForm').hidden = false; $('#adminPanel').hidden = true; setTimeout(function () { $('#pin').focus(); }, 300); }
   }
-  function closeSheet() { sheet.hidden = true; document.body.style.overflow = ''; }
+  function closeSheet() { sheet.hidden = true; document.body.style.overflow = ''; scenePause(false); }
   $('#openAdmin').onclick = openSheet;
   sheet.addEventListener('click', function (e) { if (e.target.closest('[data-close]')) closeSheet(); });
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !sheet.hidden) closeSheet(); });
@@ -291,7 +292,7 @@
       a.appendChild(t); a.appendChild(el('span', 'wa-go', 'Chamar ›')); box.appendChild(a);
     });
   }
-  function toggleWa(open) { waSheet.hidden = !open; document.body.style.overflow = open ? 'hidden' : ''; }
+  function toggleWa(open) { waSheet.hidden = !open; document.body.style.overflow = open ? 'hidden' : ''; scenePause(open); }
   document.addEventListener('click', function (e) { if (e.target.closest('[data-wa]')) toggleWa(true); });
   waSheet.addEventListener('click', function (e) { if (e.target.closest('[data-close]')) toggleWa(false); });
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !waSheet.hidden) toggleWa(false); });

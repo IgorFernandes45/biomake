@@ -5,6 +5,7 @@ const http = require('http');
 const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
+const zlib = require('zlib');
 
 const PORT = process.env.PORT || 3000;
 const PIN = process.env.BIOMAKE_PIN || crypto.randomBytes(6).toString('hex'); // sem senha definida: gera uma aleatória a cada início
@@ -124,6 +125,26 @@ async function handleApi(req, res, url) {
   send(res, 404, { error: 'Rota não encontrada.' });
 }
 
+const COMPRESSIBLE = new Set(['.html', '.css', '.js', '.json', '.svg', '.txt']);
+const packed = new Map(); // arquivo -> { mtime, raw, gz, br, etag }
+function readPacked(file, st, ext) {
+  let e = packed.get(file);
+  if (e && e.mtime === st.mtimeMs) return e;
+  const raw = fs.readFileSync(file);
+  e = { mtime: st.mtimeMs, raw, etag: '"' + crypto.createHash('sha1').update(raw).digest('base64url').slice(0, 20) + '"' };
+  if (COMPRESSIBLE.has(ext) && raw.length > 1024) {
+    e.br = zlib.brotliCompressSync(raw, { params: { [zlib.constants.BROTLI_PARAM_QUALITY]: 9 } });
+    e.gz = zlib.gzipSync(raw, { level: 9 });
+  }
+  packed.set(file, e);
+  return e;
+}
+function cacheControl(ext, rel) {
+  if (ext === '.html') return 'no-cache';
+  if (['.js', '.css'].includes(ext)) return rel.startsWith('/vendor/') ? 'public, max-age=2592000' : 'no-cache'; // no-cache = confere o ETag (304 barato)
+  return 'public, max-age=604800';
+}
+
 function serveStatic(req, res, url) {
   let rel = decodeURIComponent(url.pathname);
   if (rel.endsWith('/')) rel += 'index.html';
@@ -132,9 +153,20 @@ function serveStatic(req, res, url) {
   fs.stat(file, (err, st) => {
     if (err || !st.isFile()) { res.writeHead(404, { 'content-type': 'text/plain; charset=utf-8' }); return res.end('Página não encontrada'); }
     const ext = path.extname(file).toLowerCase();
-    const cache = ext === '.html' ? 'no-cache' : (['.js', '.css'].includes(ext) ? 'no-cache' : 'public, max-age=604800');
-    res.writeHead(200, { 'content-type': MIME[ext] || 'application/octet-stream', 'content-length': st.size, 'cache-control': cache, 'x-content-type-options': 'nosniff' });
-    fs.createReadStream(file).pipe(res);
+    let e;
+    try { e = readPacked(file, st, ext); } catch { res.writeHead(500); return res.end(); }
+    const headers = {
+      'content-type': MIME[ext] || 'application/octet-stream', 'cache-control': cacheControl(ext, rel),
+      'x-content-type-options': 'nosniff', etag: e.etag, vary: 'Accept-Encoding'
+    };
+    if (req.headers['if-none-match'] === e.etag) { res.writeHead(304, headers); return res.end(); }
+    const accept = String(req.headers['accept-encoding'] || '');
+    let body = e.raw;
+    if (e.br && /\bbr\b/.test(accept)) { body = e.br; headers['content-encoding'] = 'br'; }
+    else if (e.gz && /\bgzip\b/.test(accept)) { body = e.gz; headers['content-encoding'] = 'gzip'; }
+    headers['content-length'] = body.length;
+    res.writeHead(200, headers);
+    res.end(req.method === 'HEAD' ? undefined : body);
   });
 }
 

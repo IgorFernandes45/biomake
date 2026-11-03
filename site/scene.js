@@ -5,11 +5,17 @@
   var T = THREE;
   var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+  // celular / aparelho simples: menos pixels, menos polígonos, materiais mais baratos e 30 quadros por segundo
+  var mobile = window.innerWidth < 900 || (window.matchMedia && matchMedia('(pointer:coarse)').matches);
+  var lowEnd = mobile || (navigator.hardwareConcurrency || 8) <= 4;
+  var SEG = lowEnd ? .5 : 1;
+  function seg(n) { return Math.max(12, Math.round(n * SEG)); }
+
   var renderer;
   try {
-    renderer = new T.WebGLRenderer({ canvas: canvas, antialias: true, alpha: true, powerPreference: 'high-performance' });
+    renderer = new T.WebGLRenderer({ canvas: canvas, antialias: !mobile, alpha: true, powerPreference: mobile ? 'default' : 'high-performance' });
   } catch (e) { canvas.remove(); return; }
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, mobile ? 1.5 : 2));
   renderer.outputEncoding = T.sRGBEncoding;
   renderer.toneMapping = T.ACESFilmicToneMapping;
   renderer.toneMappingExposure = 1.2;
@@ -21,8 +27,8 @@
 
   /* ---------- ambiente (reflexos) ---------- */
   (function env() {
-    var c = document.createElement('canvas'); c.width = 1024; c.height = 512;
-    var g = c.getContext('2d');
+    var c = document.createElement('canvas'); c.width = lowEnd ? 512 : 1024; c.height = lowEnd ? 256 : 512;
+    var g = c.getContext('2d'); g.scale(c.width / 1024, c.height / 512);
     var bg = g.createLinearGradient(0, 0, 0, 512);
     bg.addColorStop(0, '#7b3aa8'); bg.addColorStop(.5, '#2a0a3d'); bg.addColorStop(1, '#12031f');
     g.fillStyle = bg; g.fillRect(0, 0, 1024, 512);
@@ -43,7 +49,7 @@
   scene.add(new T.HemisphereLight(0xffe9ff, 0x2a0a3d, 0.7));
   var key = new T.DirectionalLight(0xfff0d0, 1.6); key.position.set(4, 6, 8); scene.add(key);
   var rim = new T.PointLight(0xff5fb0, 2.2, 40); rim.position.set(-8, -2, 6); scene.add(rim);
-  var rim2 = new T.PointLight(0x9a6bff, 1.6, 40); rim2.position.set(8, 3, -2); scene.add(rim2);
+  if (!lowEnd) { var rim2 = new T.PointLight(0x9a6bff, 1.6, 40); rim2.position.set(8, 3, -2); scene.add(rim2); }
 
   /* ---------- materiais ---------- */
   function std(color, metal, rough, extra) {
@@ -52,6 +58,11 @@
     return m;
   }
   function phys(color, rough, extra) {
+    if (lowEnd) {   // sem verniz (clearcoat): bem mais leve e visualmente parecido
+      var l = new T.MeshStandardMaterial({ color: color, metalness: .35, roughness: Math.max(rough, .12), envMapIntensity: 1.3 });
+      if (extra) Object.assign(l, extra);
+      return l;
+    }
     var m = new T.MeshPhysicalMaterial({ color: color, metalness: 0.05, roughness: rough, clearcoat: 1, clearcoatRoughness: 0.08, envMapIntensity: 1.2 });
     if (extra) Object.assign(m, extra);
     return m;
@@ -69,9 +80,9 @@
   };
 
   function mesh(geo, mat, x, y, z) { var m = new T.Mesh(geo, mat); m.position.set(x || 0, y || 0, z || 0); return m; }
-  function cyl(rt, rb, h, mat, x, y, z, seg) { return mesh(new T.CylinderGeometry(rt, rb, h, seg || 48), mat, x, y, z); }
-  function lathe(points, mat, seg) {
-    return new T.Mesh(new T.LatheGeometry(points.map(function (p) { return new T.Vector2(p[0], p[1]); }), seg || 48), mat);
+  function cyl(rt, rb, h, mat, x, y, z, sg) { return mesh(new T.CylinderGeometry(rt, rb, h, seg(sg || 48)), mat, x, y, z); }
+  function lathe(points, mat, sg) {
+    return new T.Mesh(new T.LatheGeometry(points.map(function (p) { return new T.Vector2(p[0], p[1]); }), seg(sg || 48)), mat);
   }
 
   /* ---------- objetos ---------- */
@@ -80,7 +91,7 @@
     g.add(cyl(.44, .44, 1.1, M.gold, 0, -.6, 0));
     g.add(cyl(.46, .46, .1, M.purple, 0, -.02, 0));
     g.add(cyl(.35, .35, .5, M.goldDark, 0, .28, 0));
-    var bg = new T.CylinderGeometry(.31, .31, .9, 40, 6);
+    var bg = new T.CylinderGeometry(.31, .31, .9, seg(40), 6);
     var p = bg.attributes.position;
     for (var i = 0; i < p.count; i++) {
       if (p.getY(i) > .44) p.setY(i, .45 + p.getX(i) * .6 + p.getZ(i) * .02);
@@ -108,11 +119,11 @@
     g.add(cyl(1.05, 1.08, .34, M.gold, 0, 0, 0, 64));
     g.add(cyl(.86, .86, .06, M.deepPurple, 0, .18, 0, 64));
     g.add(cyl(.74, .74, .1, M.powder, 0, .2, 0, 64));
-    var ring = mesh(new T.TorusGeometry(.8, .03, 12, 64), M.gold, 0, .24, 0); ring.rotation.x = Math.PI / 2; g.add(ring);
+    var ring = mesh(new T.TorusGeometry(.8, .03, 8, seg(64)), M.gold, 0, .24, 0); ring.rotation.x = Math.PI / 2; g.add(ring);
     var lid = new T.Group();
     lid.add(cyl(1.08, 1.08, .16, M.purple, 0, .08, 0, 64));
     lid.add(cyl(.86, .86, .03, M.chrome, 0, -.01, 0, 64));
-    var rim = mesh(new T.TorusGeometry(1.07, .045, 12, 64), M.gold, 0, .08, 0); rim.rotation.x = Math.PI / 2; lid.add(rim);
+    var rim = mesh(new T.TorusGeometry(1.07, .045, 8, seg(64)), M.gold, 0, .08, 0); rim.rotation.x = Math.PI / 2; lid.add(rim);
     var heart = heartMesh(.28, M.gold); heart.rotation.x = -Math.PI / 2; heart.position.y = .18; lid.add(heart);
     var hinge = new T.Group(); hinge.position.set(0, .18, -1.05); lid.position.set(0, 0, 1.05);
     hinge.add(lid); hinge.rotation.x = -1.95; g.add(hinge);
@@ -163,7 +174,7 @@
     return s;
   }
   function heartMesh(scale, mat, depth) {
-    var geo = new T.ExtrudeGeometry(heartShape(), { depth: depth || .22, bevelEnabled: true, bevelThickness: .08, bevelSize: .07, bevelSegments: 6, curveSegments: 24 });
+    var geo = new T.ExtrudeGeometry(heartShape(), { depth: depth || .22, bevelEnabled: true, bevelThickness: .08, bevelSize: .07, bevelSegments: lowEnd ? 3 : 6, curveSegments: lowEnd ? 12 : 24 });
     geo.center(); geo.rotateZ(Math.PI); geo.scale(scale, scale, scale);   // o contorno original vem de cabeça para baixo
     var m = new T.Mesh(geo, mat); return m;
   }
@@ -180,7 +191,7 @@
     g.fillStyle = gr; g.fillRect(0, 0, 64, 64);
     return new T.CanvasTexture(c);
   })();
-  var N = window.innerWidth < 700 ? 70 : 130;
+  var N = mobile ? 40 : 130;
   var sp = new Float32Array(N * 3), sv = new Float32Array(N);
   for (var i = 0; i < N; i++) { sp[i * 3] = (Math.random() - .5) * 26; sp[i * 3 + 1] = (Math.random() - .5) * 16; sp[i * 3 + 2] = (Math.random() - .5) * 10 - 2; sv[i] = .15 + Math.random() * .4; }
   var sg = new T.BufferGeometry(); sg.setAttribute('position', new T.BufferAttribute(sp, 3));
@@ -208,6 +219,7 @@
 
   /* ---------- layouts por tela (frações da metade visível) ---------- */
   var view = 'inicio', wide = true, hw = 7, hh = 4.4, unit = .9;
+  var h0 = (location.hash || '').slice(1); if (h0 === 'lojas' || h0 === 'marcas' || h0 === 'promocoes') view = h0;
   var L = {
     inicio_wide: {
       heart:  [.64,  .02, -4.5, 1.15, 0],
@@ -252,8 +264,11 @@
     });
   }
 
+  var W = 0, H = 0;
   function resize() {
-    var w = window.innerWidth, h = window.innerHeight;
+    var w = window.innerWidth, h = canvas.clientHeight || window.innerHeight;
+    if (w === W && h === H) return;   // a barra de endereço do celular mexe só na altura da janela: não recria nada
+    W = w; H = h;
     renderer.setSize(w, h, false);
     camera.aspect = w / h; camera.updateProjectionMatrix();
     hh = Math.tan(FOV * Math.PI / 360) * CAM_Z; hw = hh * camera.aspect;
@@ -268,7 +283,7 @@
 
   /* ---------- interação ---------- */
   var mx = 0, my = 0, tx = 0, ty = 0, scrollY = 0;
-  window.addEventListener('pointermove', function (e) { tx = (e.clientX / window.innerWidth) * 2 - 1; ty = (e.clientY / window.innerHeight) * 2 - 1; }, { passive: true });
+  window.addEventListener('pointermove', function (e) { tx = (e.clientX / W) * 2 - 1; ty = (e.clientY / H) * 2 - 1; }, { passive: true });
   window.addEventListener('scroll', function () { scrollY = window.scrollY; }, { passive: true });
   if (window.DeviceOrientationEvent && 'ontouchstart' in window) {
     window.addEventListener('deviceorientation', function (e) {
@@ -277,21 +292,24 @@
     }, { passive: true });
   }
 
-  var clock = new T.Clock(), running = true;
+  var clock = new T.Clock(), running = true, paused = false, acc = 0, shown = false, minDt = lowEnd ? 1 / 30 - .004 : 0;
   document.addEventListener('visibilitychange', function () { running = !document.hidden; if (running) clock.getDelta(); });
 
   var tNow = 0;
   function frame() {
     requestAnimationFrame(frame);
-    if (!running) return;
-    tick(Math.min(clock.getDelta(), .05));
+    if (!running || paused) return;
+    acc += clock.getDelta();
+    if (acc < minDt) return;
+    tick(Math.min(acc, .05)); acc = 0;
+    if (!shown) { shown = true; canvas.classList.add('on'); }
   }
   function tick(dt) {
     tNow += dt; var t = tNow;
     var k = 1 - Math.exp(-dt * 3.2);
     mx += (tx - mx) * (1 - Math.exp(-dt * 4)); my += (ty - my) * (1 - Math.exp(-dt * 4));
     root.rotation.y = mx * .16; root.rotation.x = my * .08;
-    var pxToWorld = (2 * hh) / window.innerHeight;
+    var pxToWorld = (2 * hh) / H;
     var idx = 0;
     Object.keys(objs).forEach(function (n) {
       var o = objs[n], c = o.cur, g = o.tgt, d = o.def;
@@ -318,7 +336,7 @@
     }
     // o coração some ao descer a página (não atrapalha a leitura) e fica discreto nas outras telas
     var hm = objs.heart.model.children[0].material;
-    var hTarget = view === 'inicio' ? Math.max(0, 1 - scrollY / (window.innerHeight * .7)) : .4;
+    var hTarget = view === 'inicio' ? Math.max(0, 1 - scrollY / (H * .7)) : .4;
     heartOp += (hTarget - heartOp) * k;
     hm.transparent = true; hm.depthWrite = false; hm.opacity = heartOp; objs.heart.wrap.visible = heartOp > .02;
     sparks.position.y = scrollY * pxToWorld * .15;
@@ -329,6 +347,7 @@
   window.BioScene = {
     setView: function (v) { view = v; applyLayout(); },
     tick: tick,
+    pause: function (p) { paused = !!p; if (!p) { clock.getDelta(); acc = 0; } },
     _d: { scene: scene, objs: objs, camera: camera, renderer: renderer }
   };
 })();

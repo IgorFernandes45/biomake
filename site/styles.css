@@ -21,7 +21,8 @@ ul{list-style:none}
 a{color:inherit;text-decoration:none}
 :focus-visible{outline:2px solid var(--gold);outline-offset:3px;border-radius:12px}
 
-#gl{position:fixed;inset:0;width:100vw;height:100vh;z-index:0;pointer-events:none}
+#gl{position:fixed;left:0;top:0;width:100vw;height:100vh;height:100lvh;z-index:0;pointer-events:none;opacity:0;transition:opacity 1s}
+#gl.on{opacity:1}
 .aurora{
   position:fixed;inset:0;z-index:-1;
   background:
@@ -376,4 +377,13 @@ select.field option{color:#222}
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
   html{scroll-behavior:auto}
+}
+
+/* ---------- celular: menos desfoque e animação pesada (o 3D redesenha atrás de tudo) ---------- */
+@media (max-width:899px),(pointer:coarse){
+  *{-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
+  .tabbar{-webkit-backdrop-filter:blur(14px)!important;backdrop-filter:blur(14px)!important;background:linear-gradient(180deg,rgba(80,34,112,.82),rgba(36,10,58,.9))}
+  .topbar.scrolled{-webkit-backdrop-filter:blur(12px)!important;backdrop-filter:blur(12px)!important}
+  .price-card::before{animation:none}
+  :root{--glass:rgba(48,16,74,.74)}
 }
