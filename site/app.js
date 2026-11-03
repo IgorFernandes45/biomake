@@ -25,15 +25,6 @@
       ref: 'Em frente ao CEDIC', phone: '83981732355', ig: 'biomakecz' }
   ];
 
-  var BRANDS = [
-    { name: 'Ruby Rose', cls: 'bt-ruby', tint: 'rgba(255,120,170,.32)', html: 'Ruby Rose' },
-    { name: 'Mahav', cls: 'bt-mahav', tint: 'rgba(170,120,255,.32)', html: 'Mahav' },
-    { name: 'Fenzza', cls: 'bt-fenzza', tint: 'rgba(250,213,79,.3)', html: 'Fenzza' },
-    { name: 'Dermachem', cls: 'bt-derma', tint: 'rgba(110,235,200,.26)', html: 'derma<b>chem</b>' },
-    { name: 'Dapop', cls: 'bt-dapop', tint: 'rgba(255,120,220,.32)', html: 'Dapop' },
-    { name: 'Playboy', cls: 'bt-play', tint: 'rgba(255,255,255,.2)', html: 'Playboy' }
-  ];
-
   function el(tag, cls, text) { var e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
   function fmtPhone(d) { return d.length === 11 ? '(' + d.slice(0, 2) + ') ' + d.slice(2, 7) + '-' + d.slice(7) : d; }
   function mapUrl(q) { return 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(q); }
@@ -73,7 +64,7 @@
     var s = window.scrollY > 24; if (s !== scrolledOn) { scrolledOn = s; topbar.classList.toggle('scrolled', s); }
   }, { passive: true });
 
-  /* ================= RENDER: lojas / marcas ================= */
+  /* ================= RENDER: lojas ================= */
   function tiltable(node) { if (desktop) { node.classList.add('tilt'); node.appendChild(el('span', 'glare')); } }
   function renderStores() {
     var grid = $('#storeGrid'), rail = $('#homeRail');
@@ -109,16 +100,6 @@
     });
     grid.appendChild(gf); rail.appendChild(rf);
   }
-  function renderBrands() {   // as marcas flutuam junto com as fotos de maquiagem
-    var field = $('#brandField'), f = document.createDocumentFragment();
-    BRANDS.forEach(function (b, i) {
-      var t = el('div', 'bf ' + b.cls + ' bf-' + (i + 1)); t.style.setProperty('--tint', b.tint);
-      var s = el('span'); s.innerHTML = b.html; t.appendChild(s); t.setAttribute('aria-label', b.name);
-      f.appendChild(t);
-    });
-    field.appendChild(f);
-  }
-
   /* ================= EFEITOS (só computador com mouse) ================= */
   if (desktop) {
     document.addEventListener('pointermove', function (e) {
@@ -180,7 +161,7 @@
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !waSheet.hidden) toggleWa(false); });
 
   /* ================= INICIALIZAÇÃO ================= */
-  renderStores(); renderBrands(); renderWa();
+  renderStores(); renderWa();
   $('#year').textContent = new Date().getFullYear();
   var first = (location.hash || '').replace('#', '');
   go(VIEWS.indexOf(first) >= 0 ? first : 'inicio');
