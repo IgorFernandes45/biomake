@@ -6,11 +6,6 @@
 
   /* ================= DADOS ================= */
   var STORES = [
-    { slug: 'petrolina', city: 'Petrolina', uf: 'PE', img: 'img/petrolina.webp',
-      units: [
-        { name: 'Loja 2', addr: 'Av. Barão do Rio Branco, 844 — Centro', map: 'Av. Barão do Rio Branco, 844, Centro, Petrolina - PE' },
-        { name: 'Loja 1', addr: 'Av. dos Guararapes', map: 'Av. dos Guararapes, Petrolina - PE' }
-      ] },
     { slug: 'afranio', city: 'Afrânio', uf: 'PE', img: 'img/afranio.webp',
       units: [{ name: '', addr: 'Rua José dos Operários, 284', map: 'Rua José dos Operários, 284, Afrânio - PE' }],
       ref: 'Em frente à NDL', phone: '87988298359', ig: 'biomakeafranio' },
