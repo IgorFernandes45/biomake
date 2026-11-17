@@ -6,16 +6,16 @@
 
   /* ================= DADOS ================= */
   var STORES = [
-    { slug: 'afranio', city: 'Afrânio', uf: 'PE', img: 'img/afranio.webp',
+    { slug: 'afranio', city: 'Afrânio', uf: 'PE', img: 'img/afranio.webp', pos: 30,
       units: [{ name: '', addr: 'Rua José dos Operários, 284', map: 'Rua José dos Operários, 284, Afrânio - PE' }],
       ref: 'Em frente à NDL', phone: '87988298359', ig: 'biomakeafranio' },
-    { slug: 'capim-grosso', city: 'Capim Grosso', uf: 'BA', img: 'img/capim-grosso.webp',
+    { slug: 'capim-grosso', city: 'Capim Grosso', uf: 'BA', img: 'img/capim-grosso.webp', pos: 8,
       units: [{ name: '', addr: 'Av. Otaviano Ferreira — Praça Central', map: 'Av. Otaviano Ferreira, Capim Grosso - BA' }],
       ref: 'Antigo prédio da Coelba', phone: '74999693712', ig: 'biomake.cg' },
-    { slug: 'santana-do-sobrado', city: 'Santana do Sobrado', uf: 'BA', img: 'img/santana-do-sobrado.webp',
+    { slug: 'santana-do-sobrado', city: 'Santana do Sobrado', uf: 'BA', img: 'img/santana-do-sobrado.webp', pos: 50,
       units: [{ name: '', addr: 'Travessa Belo Jardim — Praça Principal', map: 'Travessa Belo Jardim, Santana do Sobrado - BA' }],
       ref: 'Nos pontos comerciais do Gavião', phone: '', ig: 'biomakecn' },
-    { slug: 'cajazeiras', city: 'Cajazeiras', uf: 'PB', img: 'img/cajazeiras.webp',
+    { slug: 'cajazeiras', city: 'Cajazeiras', uf: 'PB', img: 'img/cajazeiras.webp', pos: 20,
       units: [{ name: '', addr: 'Engenheiro Carlos Pires de Sá, 288 — Centro', map: 'Engenheiro Carlos Pires de Sá, 288, Centro, Cajazeiras - PB' }],
       ref: 'Em frente ao CEDIC', phone: '83981732355', ig: 'biomakecz' }
   ];
@@ -66,7 +66,7 @@
     var gf = document.createDocumentFragment(), rf = document.createDocumentFragment();
     STORES.forEach(function (s) {
       // cartão da página Lojas
-      var card = el('article', 'store'); card.dataset.store = s.slug;
+      var card = el('article', 'store'); card.dataset.store = s.slug; card.style.setProperty('--pos', s.pos + '%');
       var photo = el('div', 'photo'), img = el('img'); img.src = s.img; img.alt = 'Fachada da BioMake ' + s.city; img.loading = 'lazy'; img.decoding = 'async'; img.width = 640; img.height = 1138;
       photo.appendChild(img); photo.appendChild(el('span', 'uf', s.uf)); card.appendChild(photo);
       var body = el('div', 'body'); body.appendChild(el('h3', '', s.city));
@@ -88,7 +88,7 @@
       body.appendChild(act); card.appendChild(body); tiltable(card); gf.appendChild(card);
 
       // cartão do carrossel da home
-      var rc = el('button', 'rail-card'); rc.dataset.go = 'lojas'; rc.dataset.store = s.slug; rc.setAttribute('aria-label', 'Ver loja de ' + s.city);
+      var rc = el('button', 'rail-card'); rc.dataset.go = 'lojas'; rc.dataset.store = s.slug; rc.style.setProperty('--pos', s.pos + '%'); rc.setAttribute('aria-label', 'Ver loja de ' + s.city);
       var ri = el('img'); ri.src = s.img; ri.alt = ''; ri.loading = 'lazy'; ri.decoding = 'async'; ri.width = 640; ri.height = 1138; rc.appendChild(ri);
       var cap = el('div', 'cap'); cap.appendChild(el('b', '', s.city)); cap.appendChild(el('span', '', s.uf === 'PE' ? 'Pernambuco' : s.uf === 'BA' ? 'Bahia' : 'Paraíba'));
       rc.appendChild(cap); rf.appendChild(rc);
